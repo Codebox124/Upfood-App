@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/dist/output.css" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+  
+  <link rel="stylesheet" href="./src/styles/style.css">
+  <title>Upfood|Home</title>
+</head>
+<body class="bg justify-center self-center h-screen flex ">
+  <!-- component -->
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
+<style>
+.cursor-grab {
+    cursor: grab;
+}
+</style>
+
+<div class="min-w-screen min-h-screen  flex items-center justify-center px-5 py-5">
+    <div class="w-full mx-auto rounded-2xl shadow-lg bg-white px-5 pt-0  pb-10 text-gray-600" style="max-width: 350px" x-data="app()">
+        <div class=" relative mb-10">
+            <div class="overflow-hidden relative cursor-grab " @pointerdown="touchstartX=$event.screenX,touchstartY=$event.screenY" @pointerup="touchendX=$event.screenX,touchendY=$event.screenY,$nextTick(()=>handleSwipe())">
+                <template x-for="(item,index) in slides">
+                    <div class="w-full overflow-hidden text-center select-none" x-show="item.show" x-transition:enter="transition duration-300 transform ease" :x-transition:enter-start="currentTransition.start" :x-transition:enter-end="currentTransition.end" x-transition:leave="absolute top-0 left-0 transition duration-300 transform ease" :x-transition:leave-start="previousTransition.start" :x-transition:leave-end="previousTransition.end">
+                        <div class="w-64 h-64 border rounded-2xl  mx-auto mt-6 mb-10 overflow-hidden bg-cover bg-center" :style="`background-image:url(${item.img})`"></div>
+                        <h2 x-text="item.title" class="font-bold text-xl text-black mb-3"></h2>
+                        <p  x-text="item.body" class="text-sm leading-tight h-16 px-3"></p>
+                    </div>
+                </template>
+            </div>
+        </div>
+        <div class="flex justify-center">
+            <template x-for="(item,index) in slides">
+                <span :id="`slideDot${index}`" class="w-2 h-2 rounded-full mx-1" :class="{'bg-indigo-500':index==currentIndex,'bg-gray-200':index!==currentIndex}"></span>
+            </template>
+        </div>
+    </div>
+</div>
+
+<script>
+function app() {
+    return {
+        touchstartX: 0,
+        touchstartY: 0,
+        touchendX: 0,
+        touchendY: 0,
+        previousIndex: 0,
+        currentIndex: 0,
+        previousTransition: {
+            start: null,
+            end: null,
+        },
+        currentTransition: {
+            start: null,
+            end: null,
+        },
+        slides: [
+            {
+                show:true,
+                img: '/images/Frame.png',
+                title: 'Convenience',
+                body: 'Get your food at the comfort of your home',
+            },
+            {
+                img: '/images/Frame2.png',
+                title: 'Fast Ordering',
+                body: 'Getting your food delivered in minutes',
+            },
+            {
+                img: '/images/Frame3.png',
+                title: 'Favourite Resturants',
+                body: 'Your favorites restaurants are just a button click away.',
+            }
+        ],
+        handleSwipe: function() {
+            // Stop
+            if( this.touchstartX - this.touchendX > -20 && this.touchstartX - this.touchendX < 20 ) return;
+            // Set previous index
+            this.previousIndex = this.currentIndex;
+            // Swipe
+            if (this.touchendX < this.touchstartX) {
+                // Swipe left
+                this.currentIndex = Math.min(this.slides.length-1,this.currentIndex+1);
+                this.previousTransition.start = 'translate-x-none opacity-1';
+                this.previousTransition.end = '-translate-x-1/4 opacity-0';
+                this.currentTransition.start = 'translate-x-1/4 opacity-0';
+                this.currentTransition.end = 'translate-x-none opacity-1';
+            } else {
+                // Swipe right
+                this.currentIndex = Math.max(0,this.currentIndex-1);
+                this.previousTransition.start = 'translate-x-none opacity-1';
+                this.previousTransition.end = 'translate-x-1/4 opacity-0';
+                this.currentTransition.start = '-translate-x-1/4 opacity-0';
+                this.currentTransition.end = 'translate-x-none opacity-1';
+            }
+            // Check previous index
+            if( this.previousIndex !== this.currentIndex ) {
+                this.showSlide();
+            }
+        },
+        showSlide: function() {
+            for(let i = 0; i < this.slides.length; i++){
+                this.slides[i].show = i == this.currentIndex;
+            }
+        }
+    }
+}
+</script>
+
+
+
+
+
+</body>
+
+  
+
+
+ 
+  
+
+<script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+<script src="/src/index.js"></script>  
+<script src="/node_modules/tw-elements/dist/js/index.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min.js"></script>
+</body>
+</html>
