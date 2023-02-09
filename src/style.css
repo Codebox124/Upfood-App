@@ -11,6 +11,10 @@
     width: 100%;
     height: 546px;
 }
+.bg-button{
+    background: linear-gradient(98.81deg, #53E88B -0.82%, #15BE77 101.53%);
+
+}
 
 body {
     font-size: 15pt;
