@@ -15,6 +15,10 @@
     background: linear-gradient(98.81deg, #53E88B -0.82%, #15BE77 101.53%);
 
 }
+.bg-back-bt{
+    background-color: rgba(83, 232, 139, 1);
+    
+}
 
 body {
     font-size: 15pt;
